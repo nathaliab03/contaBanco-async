@@ -25,8 +25,8 @@ async function consultarBanco(contaConsultada){
 
             //Se a conta existir, retorna a conta consultada
             resolve(conta);
-        }, 1000)
-    })
+        }, 1000);
+    });
 }
 
 /*
@@ -45,35 +45,35 @@ async function consultarBanco(contaConsultada){
 async function verificaExistenciaConta(contaOrigem){
     try{
         const conta = await consultarBanco(contaOrigem);
-        return conta
+        return conta;
     } catch(error) {
         console.error(`Erro ao depositar: ${error.message}`)
-        return null
+        return null;
     }
 }
 
 async function depositar(valorDepositado, contaOrigem){
     // Chama a função que verifica se a contaOrigem existe no banco
-    const conta = await verificaExistenciaConta(contaOrigem) 
+    const conta = await verificaExistenciaConta(contaOrigem);
 
     // Se a conta não existir irá retornar o erro
     if(!conta)
-        return
+        return;
     
     // Se a conta existir prossegue com o depósito
     if(valorDepositado > 0){
         // Valor do saldo é atualizado
         conta.saldo += valorDepositado
         // to.Fixed(2) fixa o valor em 2 casas decimais
-        console.log(`Depósito de R$ ${valorDepositado.toFixed(2)} efetuado com sucesso.`)
+        console.log(`Depósito de R$ ${valorDepositado.toFixed(2)} efetuado com sucesso.`);
     } else
         console.log("O valor do depósito precisa ser maior do que 0");    
 }
 
 async function sacar(valorSacado, contaOrigem){
-    const conta = await verificaExistenciaConta(contaOrigem)
+    const conta = await verificaExistenciaConta(contaOrigem);
     if(!conta)
-    return
+    return;
 
     if(valorSacado <= conta.saldo){
         conta.saldo -= valorSacado;
@@ -84,10 +84,9 @@ async function sacar(valorSacado, contaOrigem){
 }
 
 async function transferir(valorTransferido, contaOrigem, contaDestino){
-    
     const destinoTransf = await verificaExistenciaConta(contaDestino);
     if(!destinoTransf)
-    return
+    return;
 
     // Realiza o saque da conta origem
     const valorSacado = await sacar(valorTransferido, contaOrigem);
@@ -95,11 +94,11 @@ async function transferir(valorTransferido, contaOrigem, contaDestino){
     if (valorSacado != null) {
         destinoTransf.saldo += valorSacado;
         console.log(
-        `Transferência de R$ ${valorTransferido.toFixed(2)} realizada com sucesso da conta de ${contaOrigem} para a conta ${contaDestino}. Novo saldo de João: ${destinoTransf.saldo.toFixed(2)}`)
+        `Transferência de R$ ${valorTransferido.toFixed(2)} realizada com sucesso da conta de ${contaOrigem} para a conta ${contaDestino}. Novo saldo de João: ${destinoTransf.saldo.toFixed(2)}`);
     }
 }
 
-depositar(10, 'Maria')
+depositar(10, 'Maria');
 sacar(10000, 'Maria');
 transferir(100, 'Maria', 'rere');
 transferir(100, 'Maria', 'João');
